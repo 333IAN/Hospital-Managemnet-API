@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'simple_history',
     'users',
     'clinical',
+    'billing',
+    'pharmacy',
 ]
 AUTH_USER_MODEL='users.USER'
 
