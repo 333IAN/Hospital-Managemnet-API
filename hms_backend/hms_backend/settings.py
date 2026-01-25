@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'clinical',
     'billing',
     'pharmacy',
+    'lab',
 ]
 AUTH_USER_MODEL='users.USER'
 
