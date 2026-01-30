@@ -59,13 +59,13 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_profile(self, obj):
         role_serializer_map={
-            'PATIENT': (PatientProfileSerializer, 'patient_profile'),
-            'DOCTOR': (DoctorProfileSerializer, 'doctor_profile'),
-            'NURSE': (NurseProfileSerializer, 'nurse_profile'),
-            'PHARMACIST': (PharmacistProfileSerializer, 'pharmacist_profile'),
-            'LAB_TECH': (LabTechProfileSerializer, 'labtech_profile'),
-            'RADIOLOGIST': (RadiologistProfileSerializer, 'radiologist_profile'),
-            'RECEPTIONIST': (ReceptionistProfileSerializer, 'receptionist_profile'),
+            'PATIENT': (PatientProfileSerializer, 'patientprofile'),
+            'DOCTOR': (DoctorProfileSerializer, 'doctorprofile'),
+            'NURSE': (NurseProfileSerializer, 'nurseprofile'),
+            'PHARMACIST': (PharmacistProfileSerializer, 'pharmacistprofile'),
+            'LAB_TECH': (LabTechProfileSerializer, 'labtechprofile'),
+            'RADIOLOGIST': (RadiologistProfileSerializer, 'radiologistprofile'),
+            'RECEPTIONIST': (ReceptionistProfileSerializer, 'receptionistprofile'),
         }
 
         if obj.role in role_serializer_map:

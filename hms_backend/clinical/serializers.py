@@ -35,8 +35,8 @@ class AppointmentSerializer(serializers.ModelSerializer):
     vitals = VitalsSerializer(read_only=True)
     consultation = ConsultationSerializer(read_only=True)
 
-    patient_name=serializers.StringField(source='patient', read_only=True)
-    doctor_name=serializers.StringField(source='doctor', read_only=True)
+    patient_name=serializers.CharField(source='patient', read_only=True)
+    doctor_name=serializers.CharField(source='doctor', read_only=True)
 
     class Meta:
         model = Appointment

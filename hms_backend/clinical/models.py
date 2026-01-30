@@ -24,12 +24,15 @@ class Appointment(models.Model):
     
 
 class Vitals(models.Model):
-    appointment=models.OneToOneField(Appointment, on_delete=models.CASCADE, related_name='vitals')
-    recorded_by=models.ForeignKey(NurseProfile, on_delete=models.SET_NULL, null=True)
+    patient=models.ForeignKey(PatientProfile, on_delete=models.CASCADE, related_name='vitals')
+    recorded_at=models.DateTimeField(auto_now_add=True)
     temperature=models.DecimalField(max_digits=4, decimal_places=1, help_text="in Celsius")
     blood_pressure=models.CharField(max_length=10, help_text="e.g., 120/80")
+    respiratory_rate=models.PositiveIntegerField(blank=True, null=True)
+    appointment=models.OneToOneField(Appointment, on_delete=models.CASCADE, related_name='vitals')
     pulse_rate=models.IntegerField(help_text="beats per minute")
     weight=models.DecimalField(max_digits=5, decimal_places=2, help_text="in kg")
+    recorded_by=models.ForeignKey(NurseProfile, on_delete=models.SET_NULL, null=True)
     recorded_at=models.DateTimeField(auto_now_add=True)
     history=HistoricalRecords()
 
@@ -38,11 +41,15 @@ class Vitals(models.Model):
     
 
 class Consultation(models.Model):
+    patient=models.ForeignKey(PatientProfile, on_delete=models.CASCADE, related_name='consultations')
     appointment=models.OneToOneField(Appointment, on_delete=models.CASCADE, related_name='consultation')
     doctor=models.ForeignKey(DoctorProfile, on_delete=models.CASCADE, related_name='consultations')
+    vitals=models.OneToOneField(Vitals, on_delete=models.SET_NULL, null=True, blank=True)
     symptoms=models.TextField(help_text="Chief complaints reported by the patient")
-    clinical_notes=models.TextField(blank=True, null=True, help_text="Additional doctor observations")
-    advice=models.TextField(help_text=" Advice given to the patient")
+    diagnosis=models.TextField()
+    plan=models.TextField(help_text="Treatment Plan")
+    is_follow_up=models.BooleanField(default=False)
+    notes=models.TextField(blank=True)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     history=HistoricalRecords()

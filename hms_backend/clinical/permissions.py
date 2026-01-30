@@ -4,7 +4,7 @@ class IsDoctor(permissions.BasePermission):
     def has_permission(self, request, view):
         return bool (request.user.is_authenticated and request.user.role=='DOCTOR')
     
-class IsNurse(permissions.BasePermisssion):
+class IsNurse(permissions.BasePermission):
     def has_permission(self, request, view):
         return bool (request.user.is_authenticated and request.user.role=='NURSE')
     

@@ -4,15 +4,15 @@ from .models import User, PatientProfile, DoctorProfile, NurseProfile, Pharmacis
 from  .forms import CustomUserCreationForm
 
 
-class PatientProfileInline(admin.StackedInline):
-    model = PatientProfile
-    can_delete = False
-    verbose_name_plural = 'Patient Profile'
+@admin.register(PatientProfile)
+class PatientProfileAdmin(admin.ModelAdmin):
+    search_fields = ('patient_id', 'user__first_name', 'user__last_name', 'user__email')
+    list_display = ('patient_id', 'user')
 
-class DoctorProfileInline(admin.StackedInline):
-    model = DoctorProfile
-    can_delete = False
-    verbose_name_plural = 'Doctor Profile'
+@admin.register(DoctorProfile)
+class DoctorProfileAdmin(admin.ModelAdmin):
+    search_fields = ('employee_id', 'user__first_name', 'user__last_name', 'specialization')
+    list_display = ('employee_id', 'user', 'specialization')
 
 class NurseProfileInline(admin.StackedInline):
     model = NurseProfile
@@ -81,15 +81,9 @@ class UserAdmin(BaseUserAdmin):
             inlines.append(ReceptionistProfileInline(self.model, self.admin_site))
 
         return inlines
-    
-admin.site.register(User, UserAdmin)
-admin.site.register(PatientProfile)
-admin.site.register(DoctorProfile)
-admin.site.register(NurseProfile)
-admin.site.register(PharmacistProfile)
-admin.site.register(LabTechProfile)
-admin.site.register(RadiologistProfile)
-admin.site.register(ReceptionistProfile)
+
+
+
 
 
 
