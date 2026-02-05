@@ -1,5 +1,5 @@
 from django.db import models
-
+import re
 from users.models import PatientProfile, DoctorProfile, User
 
 
@@ -42,8 +42,23 @@ class LabResult(models.Model):
     completed_at=models.DateTimeField(auto_now_add=True)
 
 
-    def __str__(self):
-        return f"Result for {self.request.test_type.name}"
+
+    def save(self, *args, **kwargs):
+        test_range = self.request.test_type.normal_range
+        numbers = re.findall(r"[-+]?\d*\.\d+|\d+", test_range)
+        
+        if len(numbers) == 2:
+            try:
+                low, high = float(numbers[0]), float(numbers[1])
+                val = float(self.result_value)
+                self.is_abnormal = val < low or val > high
+            except ValueError:
+                pass
+        if self.request.status != 'COMPLETED':
+            self.request.status = 'COMPLETED'
+            self.request.save()
+            
+        super().save(*args, **kwargs)
     
 
 

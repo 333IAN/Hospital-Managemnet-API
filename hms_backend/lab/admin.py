@@ -15,7 +15,7 @@ class LabRequestAdmin(admin.ModelAdmin):
 
 
 @admin.register(LabResult)
-class LabResultAdmin(admin.ModelelAdmin):
+class LabResultAdmin(admin.ModelAdmin):
     list_display=('request', 'result_value', 'is_abnormal', 'completed_at')
 
 
