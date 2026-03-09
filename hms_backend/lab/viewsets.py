@@ -1,6 +1,11 @@
 from rest_framework import viewsets, permissions
 from .models import LabTestProfile, LabRequest, LabResult
 from .serializers import LabTestProfileSerializer, LabRequestSerializer, LabResultSerializer
+from django.template.loader import render_to_string
+from django.http import HttpResponse
+from weasyprint import HTML
+from rest_framework.decorators import action
+from django.conf import settings
 
 
 class LabTestProfileViewSet(viewsets.ModelViewSet):
@@ -31,6 +36,22 @@ class LabResultViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(lab_tech=self.request.user)
+
+    @action(detail=True, methods=['get'], url_path='download-report')
+    def download_report(self,request,pk=None):
+        result_obj=self.get_object()
+
+        context={
+            'result':result_obj,
+            'base_dir': settings.BASE_DIR
+        }
+        html_string=render_to_string('lab_report_pdf.html', context)
+
+        pdf=HTML(string=html_string).write_pdf()
+
+        response=HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition']=f'inline; filename="report_{result_obj.id}.pdf"'
+        return response
 
 
 

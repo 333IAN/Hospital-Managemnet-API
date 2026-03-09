@@ -1,6 +1,8 @@
 from django.db import models
 from users.models import PatientProfile
 from clinical.models import Appointment
+from decimal import Decimal
+
 
 class PaymentMode(models.Model):
     name=models.CharField(max_length=50, unique=True)
@@ -33,6 +35,7 @@ class Invoice(models.Model):
     
     def update_totals(self):
         self.paid_amount=sum(payment.amount for payment in self.payments.all())
+        self.total_amount=sum(item.total_price for item in self.items.all())
         if self.paid_amount>=self.total_amount:
             self.status='PAID'
         elif self.paid_amount>0:
@@ -40,6 +43,28 @@ class Invoice(models.Model):
         else:
             self.status='PENDING'
         self.save()
+  
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            self.total_amount = sum(item.total_price for item in self.items.all())
+
+            
+            if self.total_amount > 0:
+                if self.paid_amount >= self.total_amount:
+                    self.status = 'PAID'
+                elif self.paid_amount > 0:
+                    self.status = 'PARTIAL'
+                else:
+                    self.status = 'PENDING'
+                    
+        super().save(*args, **kwargs)
+
+    
+    @property
+    def get_balance(self):
+        return (self.total_amount or 0) - (self.paid_amount or 0)
+
 
 class InvoiceItem(models.Model):
     invoice=models.ForeignKey(Invoice, on_delete=models.CASCADE, related_name='items')
@@ -50,11 +75,13 @@ class InvoiceItem(models.Model):
     @property
     def total_price(self):
         return self.quantity * self.unit_price
-    
-    def save (self, *args, **kwargs):
+
+    def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        self.invoice.total_amount=sum(item.total_price for item in self.invoice.items.all())
-        self.invoice.save()
+        if self.invoice:
+            self.invoice.update_totals()
+    
+
 
 
 class Payment(models.Model):

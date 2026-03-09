@@ -41,9 +41,9 @@ class Vitals(models.Model):
     
 
 class Consultation(models.Model):
-    patient=models.ForeignKey(PatientProfile, on_delete=models.CASCADE, related_name='consultations')
+    patient=models.ForeignKey(PatientProfile, on_delete=models.CASCADE, related_name='consultation')
     appointment=models.OneToOneField(Appointment, on_delete=models.CASCADE, related_name='consultation')
-    doctor=models.ForeignKey(DoctorProfile, on_delete=models.CASCADE, related_name='consultations')
+    doctor=models.ForeignKey(DoctorProfile, on_delete=models.CASCADE, related_name='consultation')
     vitals=models.OneToOneField(Vitals, on_delete=models.SET_NULL, null=True, blank=True)
     symptoms=models.TextField(help_text="Chief complaints reported by the patient")
     diagnosis=models.TextField()
@@ -55,7 +55,8 @@ class Consultation(models.Model):
     history=HistoricalRecords()
 
     def __str__(self):
-        return f"Consultation for {self.appointment.patient.user.last_name} by Dr. {self.doctor.user.last_name}"
+        patient_name=self.patient.user.get_full_name() if self.patient else "Unknown Patient"
+        return f"Consultation: {patient_name} by Dr. {self.doctor.user.last_name}"
     
 class Prescription(models.Model):
     consultation=models.OneToOneField(Consultation, on_delete=models.CASCADE, related_name='prescription')

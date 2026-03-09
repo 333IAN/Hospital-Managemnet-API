@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {font-family: sans-serif; color: #333}
+        .header {text-align: center; border-bottom: 2px solid #007bff; padding-bottom: 10px;}
+        .invoice-details {margin-top: 20px;}
+        table {width: 100%; border-collapse: collapse; margin-top: 20px;}
+        th,td {border: 1px solid #ddd; padding: 10px; text-align: left;}
+        th {background-color: #f8f9fa;}
+        .total-section {text-align: right; margin-top: 20px; font-weight: bold; font-size: 1.2em;}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>CITY HOSPITAL</h1>
+        <p>000 Medical Plaza, Nairobi | +254 700 000 000</p>
+    </div>
+
+    <div class="invoice-details">
+        <p><strong>Patient:</strong>
+            {% if invoice.patient.user.get_full_name %}
+                {{ invoice.patient.user.get_full_name }}
+            {% else %}
+                {{ invoice.patient.user.email }}  {% endif %}
+        </p>
+        <p><strong>Invoice ID:</strong> #INV-{{invoice.id}}</p>
+        <p><strong>Date:</strong> {{ invoice.invoice_date|date:"M d Y" }}</p>
+        <p><strong>Status:</strong> {{ invoice.status }}</p>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Item Description</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in invoice.items.all %}
+            <tr>
+                <td>{{ item.item_name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.unit_price }}</td>
+                <td>{{ item.total_price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="total-section">
+        <p>Total Amount: KES {{ invoice.total_amount }}</p>
+        <p>Amount Paid: KES {{ invoice.paid_amount }}</p>
+        <p style="color: red;">Balance: KES {{ invoice.get_balance }}</p>
+    </div>
+</body>
+</html>

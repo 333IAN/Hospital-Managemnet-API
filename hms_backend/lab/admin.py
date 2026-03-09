@@ -11,7 +11,6 @@ class LabTestProfileAdmin(admin.ModelAdmin):
 class LabRequestAdmin(admin.ModelAdmin):
     list_display=('patient', 'test_type', 'status', 'requested_at')
     list_filter=('status',)
-    autocomplete_fields=['patient', 'doctor']
 
 
 @admin.register(LabResult)

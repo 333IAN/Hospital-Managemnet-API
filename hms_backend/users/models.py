@@ -45,6 +45,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'role']
 
+    def get_full_name(self):
+        return f"{self.first_name} {self.last_name}".strip()
+
     def __str__(self):
         return f"{self.email} ({self.role})"
     
@@ -61,20 +64,20 @@ class BaseStaffProfile(models.Model):
 class PatientProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='patientprofile')
     patient_id=models.CharField(max_length=20, unique=True, null=True, blank=True)
-    date_of_birth = models.DateField()
-    blood_group=models.CharField(max_length=5)
-    emergency_contact = models.CharField(max_length=100)
+    date_of_birth = models.DateField(null=True, blank=True)
+    blood_group=models.CharField(max_length=5, null=True, blank=True)
+    emergency_contact = models.CharField(max_length=100, null=True, blank=True)
     history= HistoricalRecords()
 
 
 class DoctorProfile(BaseStaffProfile):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='doctorprofile')
-    specialization = models.CharField(max_length=100)
+    specialization = models.CharField(max_length=100, null=True, blank=True)
     is_on_call = models.BooleanField(default=False)
 
 class NurseProfile(BaseStaffProfile):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='nurseprofile')
-    ward=models.CharField(max_length=100)
+    ward=models.CharField(max_length=100, null=True, blank=True)
 
 class PharmacistProfile(BaseStaffProfile):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='pharmacistprofile')
@@ -82,11 +85,11 @@ class PharmacistProfile(BaseStaffProfile):
 
 class LabTechProfile(BaseStaffProfile):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='labtechprofile')
-    lab_certification= models.CharField(max_length=100)
+    lab_certification= models.CharField(max_length=100, null=True, blank=True)
 
 class RadiologistProfile(BaseStaffProfile):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='radiologistprofile')
-    modality= models.CharField(max_length=100)
+    modality= models.CharField(max_length=100, null=True, blank=True)
 
 class ReceptionistProfile(BaseStaffProfile):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='receptionistprofile')

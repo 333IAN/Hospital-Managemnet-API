@@ -22,7 +22,7 @@ class InvoiceSerializer(serializers.ModelSerializer):
     items=InvoiceItemSerializer(many=True, read_only=True)
     payments=PaymentSerializer(many=True, read_only=True)
 
-    patient_name=serializers.CharField(source='patient.user.first_name', read_only=True)
+    patient_name=serializers.ReadOnlyField(source='patient.user.get_full_name')
 
     class Meta:
         model=Invoice

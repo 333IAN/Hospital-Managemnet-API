@@ -14,6 +14,42 @@ class DoctorProfileAdmin(admin.ModelAdmin):
     search_fields = ('employee_id', 'user__first_name', 'user__last_name', 'specialization')
     list_display = ('employee_id', 'user', 'specialization')
 
+@admin.register(NurseProfile)
+class NurseProfileAdmin(admin.ModelAdmin):
+    search_fields=('employee_id', 'user__first_name', 'user__last_name', 'ward')
+    list_display=('employee_id', 'user', 'ward')
+
+@admin.register(PharmacistProfile)
+class PharmacistProfileAdmin(admin.ModelAdmin):
+    search_fields=('employee_id', 'user__first_name', 'user__last_name')
+    list_display=('employee_id', 'user')
+
+@admin.register(LabTechProfile)
+class LabTechProfileAdmin(admin.ModelAdmin):
+    search_fields=('employee_id', 'user__first_name', 'user__last_name')
+    list_display=('employee_id', 'user', 'lab_certification')
+
+@admin.register(RadiologistProfile)
+class RadiologistProfileAdmin(admin.ModelAdmin):
+    search_fields=('employee_id', 'user__first_name', 'user__last_name')
+    list_display=('employee_id', 'user', 'modality')
+
+@admin.register(ReceptionistProfile)
+class ReceptionistProfileAdmin(admin.ModelAdmin):
+    search_fields=('employee_id', 'user__first_name', 'user__last_name')
+    list_display=('employee_id', 'user', 'department')
+
+
+class PatientProfileInline(admin.StackedInline):
+    model = PatientProfile
+    can_delete = False
+    verbose_name_plural = 'Patient Profile'
+
+class DoctorProfileInline(admin.StackedInline):
+    model = DoctorProfile
+    can_delete = False
+    verbose_name_plural = 'Doctor Profile'
+
 class NurseProfileInline(admin.StackedInline):
     model = NurseProfile
     can_delete = False
@@ -39,6 +75,8 @@ class ReceptionistProfileInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = 'Receptionist Profile'
 
+
+@admin.register(User)
 class UserAdmin(BaseUserAdmin):
     add_form=CustomUserCreationForm
     list_display=('email', 'first_name', 'last_name', 'role', 'is_staff')

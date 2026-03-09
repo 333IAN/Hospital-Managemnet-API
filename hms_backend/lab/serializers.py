@@ -9,9 +9,10 @@ class LabTestProfileSerializer(serializers.ModelSerializer):
         fields= '__all__'
 
 class LabResultSerializer(serializers.ModelSerializer):
+    patient_full_name=serializers.CharField(source='request.patient.user.get_full_name', read_only=True)
     class Meta:
         model=LabResult
-        fields=['id', 'request', 'lab_tech', 'result_value', 'is_abnormal', 'technician_remarks', 'completed_at']
+        fields=['id', 'request','patient_full_name', 'lab_tech', 'result_value', 'is_abnormal', 'technician_remarks', 'completed_at']
         read_only_fields=['lab_tech', 'completed_at', 'is_abnormal']
 
     

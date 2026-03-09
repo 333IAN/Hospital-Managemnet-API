@@ -9,7 +9,7 @@ def auto_bill_consultation_fee(sender, instance, created, **kwargs):
     if created:
         CONSULTATION_FEE=500.00
         with transaction.atomic():
-            invoice, _=Invoice.objects.get_or_created(
+            invoice, _=Invoice.objects.get_or_create(
                 patient=instance.patient,
                 status='PENDING',
                 defaults={'total_amount': 0}
