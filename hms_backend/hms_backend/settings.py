@@ -35,7 +35,7 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS=[
     'https://*.run.app',
-    https://
+    'https://hospital-management-api-409389836892.europe-west1.run.app'
 ]
 
 
