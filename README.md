@@ -10,8 +10,8 @@ A robust, cloud-native backend REST API designed to streamline hospital operatio
 
 ## 🚀 Live Production Environment
 This API is continuously deployed via Google Cloud Build and hosted on Google Cloud Run. 
-* **Live Base URL:** `[https://hospital-managemnet-api-409389836892.europe-west1.run.app]`
-* **Admin Portal:** `[https://hospital-managemnet-api-409389836892.europe-west1.run.app/admin/`
+* **Live Base URL:** `[Insert your live Cloud Run URL here]`
+* **Admin Portal:** `[Insert your live Cloud Run URL here]/admin/`
 
 ---
 
@@ -52,6 +52,8 @@ Here are the primary routes available in the live production environment. All en
 
 > **🔒 Authentication Note:** Administrative actions and PDF generation require a valid session token or superuser access via the `/admin/` portal.
 
+---
+
 ## 🛠️ Technology Stack
 
 **Core Application:**
@@ -79,7 +81,33 @@ Want to run this project locally? Follow these steps:
 ```bash
 git clone [https://github.com/333IAN/Hospital-Managemnet-API.git](https://github.com/333IAN/Hospital-Managemnet-API.git)
 cd Hospital-Managemnet-API
+```
 
-
-**2. Create and activate a virtual environment**
+**2. Create Virtual Environment**
 ```bash
+python3 -m venv venv
+```
+
+```bash
+# For Linux/macOS:
+source venv/bin/activate 
+
+# For Windows:
+venv\Scripts\activate
+```
+
+```bash
+pip install -r requirements.txt
+```
+
+```bash
+DEBUG=True
+SECRET_KEY=your_secret_key
+DATABASE_URL=your_local_or_neon_postgres_url
+ALLOWED_HOSTS=*
+```
+
+```bash
+python manage.py migrate
+python manage.py runserver
+```
