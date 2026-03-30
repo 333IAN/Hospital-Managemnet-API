@@ -79,3 +79,7 @@ Want to run this project locally? Follow these steps:
 ```bash
 git clone [https://github.com/333IAN/Hospital-Managemnet-API.git](https://github.com/333IAN/Hospital-Managemnet-API.git)
 cd Hospital-Managemnet-API
+
+
+**2. Create and activate a virtual environment**
+```bash
