@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {font-family: 'Helvetica', sans-serif; line-height: 1.6; }
+        .header {text-align: center; border-bottom: 3px solid #2c3e50; padding-bottom: 10px;}
+        .patient-box {background: #f4f7f6; padding: 15px; margin: 20px 0; border-radius: 5px;}
+        table {width: 100%; border-collapse: collapse;}
+        th, td {border:1px solid #ddd; padding: 12px; text-align: left;}
+        th {background-color: #2c3e50; color: white;}
+        .abnormal {color: #e74c3c; font-weight: bold; background-color: #fdf2f2;}
+        .footer {margin-top: 50px; font-size: 0.8em; font-style: italic; border-top: 10px solid #eee;}
+
+
+        .signature-section {
+        margin-top: 50px;
+        position: relative;
+        width: 100%;
+        height: 150px;
+        }
+        .signature-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-top: 1px solid #333;
+            width: 250px;
+            text-align: center;
+            padding-top: 5px;
+        }
+        .stamp-image {
+            position: absolute;
+            top: -30px; /* Moves the stamp up to 'overlap' the signature line */
+            left: 50px;
+            width: 120px;
+            opacity: 0.8; /* Makes it look slightly faded like a real stamp */
+            z-index: -1;
+        }
+    </style>
+
+<div class="signature-section">
+    <img src="file:///{{ base_dir }}/static/images/hospitalsig.jpeg" class="stamp-image">
+    <div class="signature-text">
+        <p><strong>Digitally Signed By:</strong></p>
+        <p>Lab Tech: {{ result.lab_tech.get_full_name|default:result.lab_tech.email }}</p>
+        <p>License No: #{{ result.lab_tech.id|add:"1000" }}</p>
+    </div>
+</div>
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>CITY HOSPITAL - DIAGNOSTIC LABORATORY REPORT</h1>
+        <p>Accredited Lab Sevices | Nairobi, Kenya</p>
+    </div>
+    <div class="patient-box">
+            <p><strong>Patient Name:</strong>
+                {% if result.request.patient.user.get_full_name %}
+                    {{ result.request.patient.user.get_full_name }}
+                {% else %}
+                    {{ result.request.patient.user.email }} 
+                {% endif %}
+            </p>
+        <p><strong>Request ID:</strong> #LAB-{{ result.request.id }} | <strong>Date:</strong>{{ result.completed_at|date:"M d Y" }}</p>
+        <p><strong>Ordering Doctor:</strong> Dr.{{ result.request.doctor.user.last_name }}</p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Test Parameter</th>
+                <th>Result</th>
+                <th>Reference Range</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="{%if result.is_abnormal %}abnormal{% endif %}">
+                <td>{{ result.request.test_type.name }}</td>
+                <td>{{ result.result_value }} {{ result.request.test_type.unit }}</td>
+                <td>{{ result.request.test_type.normal_range }}</td>
+                <td>{% if result.is_abnormal %}ABNORMAL{% else %}NORMAL{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="footer">
+        <p>Technician Remarks: {{ result.technician_remarks|default:"No specific Remarks" }}</p>
+        <p>Report Generated on: {{ result.completed_at|date:"Y-m-d H:i" }}</p>
+    </div>
+</body>
+</html>
