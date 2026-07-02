@@ -63,7 +63,7 @@ Want to run this project locally? Follow these steps:
 git clone [https://github.com/333IAN/Hospital-Managemnet-API.git](https://github.com/333IAN/Hospital-Managemnet-API.git)
 cd Hospital-Managemnet-API
 ```
-### **2. Create and Activate Virtual Environment**
+**2. Create and Activate Virtual Environment**
 
 ```bash
 python3 -m venv venv
@@ -80,12 +80,12 @@ source venv/bin/activate
 ```bash
 venv\Scripts\activate
 ```
-### **3. Install Dependencies**
+**3. Install Dependencies**
 
 ```bash
 pip install -r requirements.txt
 ```
-### **4. Set Up Environment Variables**
+**4. Set Up Environment Variables**
 
 Create a `.env` file in the root directory:
 
@@ -100,17 +100,17 @@ DEBUG=True
 SECRET_KEY=your_secret_key
 DATABASE_URL=your_database_url
 ```
-### **5. Apply Migrations**
+**5. Apply Migrations**
 
 ```bash
 python manage.py migrate
 ```
-### **6. Create Superuser**
+**6. Create Superuser**
 
 ```bash
 python manage.py createsuperuser
 ```
-### **7. Run Development Server**
+**7. Run Development Server**
 
 ```bash
 python manage.py runserver
