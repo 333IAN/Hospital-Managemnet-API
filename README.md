@@ -60,7 +60,7 @@ Want to run this project locally? Follow these steps:
 
 **1. Clone the repository**
 ```bash
-git clone [https://github.com/333IAN/Hospital-Managemnet-API.git](https://github.com/333IAN/Hospital-Managemnet-API.git)
+git clone https://github.com/333IAN/Hospital-Managemnet-API.git
 cd Hospital-Managemnet-API
 ```
 **2. Create and Activate Virtual Environment**
