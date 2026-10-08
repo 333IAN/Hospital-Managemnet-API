@@ -14,6 +14,7 @@ This API is continuously deployed via Google Cloud Build and hosted on Google Cl
 * **Admin Portal:** `https://hospital-managemnet-api-409389836892.europe-west1.run.app/admin/`
 
 ---
+![System Architecture](assets/hospitalmngmnt.)
 
 ## 🏗️ Cloud & System Architecture
 This project goes beyond standard local development, featuring a fully automated, production-grade cloud infrastructure:
